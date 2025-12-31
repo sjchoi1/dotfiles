@@ -273,6 +273,7 @@ function! SetupBufferListPanel()
     vertical resize 25
     setlocal winfixwidth
     nnoremap <buffer> <CR> :call OpenBuffer(line('.') - 1)<CR>
+    nnoremap <buffer> <LeftRelease> :call OpenBuffer(line('.') - 1)<CR>
     for i in range(1, 9)
         execute 'nnoremap <buffer> ' . i . ' :call OpenBuffer(' . (i-1) . ')<CR>'
     endfor
