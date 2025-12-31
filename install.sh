@@ -9,10 +9,11 @@ DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "Installing dotfiles from $DOTFILES_DIR"
 
-# Install neovim
+# Install neovim and xclip
 if ! command -v nvim &> /dev/null; then
-    echo "Installing neovim..."
-    sudo apt install -y neovim
+    echo "Installing neovim and xclip..."
+    sudo apt-get update
+    sudo apt-get install -y neovim xclip
 fi
 
 # Backup and link .tmux.conf
@@ -59,4 +60,4 @@ curl -fsSL https://claude.ai/install.sh | bash
 git config --global user.name "sjchoi"
 git config --global user.email "sjchoi@casys.kaist.ac.kr"
 
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc && source ~/.bashrc
+echo "Done! Run 'source ~/.bashrc' to apply changes."
