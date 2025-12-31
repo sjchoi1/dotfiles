@@ -47,10 +47,15 @@ if ! grep -q "alias vim='nvim'" ~/.bashrc; then
     echo "Added vim->nvim alias to .bashrc"
 fi
 
-# Add cc (copy terminal output to clipboard) alias
-if ! grep -q "alias cc=" ~/.bashrc; then
-    echo "alias cc='tmux capture-pane -p -S -50 | xclip -selection clipboard'" >> ~/.bashrc
-    echo "Added cc alias to .bashrc"
+# Add cc (copy terminal output to clipboard) function
+if ! grep -q "^cc()" ~/.bashrc; then
+    cat >> ~/.bashrc << 'EOFCC'
+cc() {
+  local n=${1:-10}
+  tmux capture-pane -p | grep -v "^$" | tail -n "$n" | xclip -selection clipboard
+}
+EOFCC
+    echo "Added cc function to .bashrc"
 fi
 
 # Add gg (quick git sync) alias - excludes files >50MB
