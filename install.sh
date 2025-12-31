@@ -69,10 +69,12 @@ fi
 
 echo ""
 echo "========================================"
-echo "SSH public key (add to GitHub):"
+echo "SSH public key (copied to clipboard):"
 echo "========================================"
 cat ~/.ssh/id_ed25519.pub
+cat ~/.ssh/id_ed25519.pub | xclip -selection clipboard
 echo "========================================"
+echo "Paste with Ctrl+V on GitHub"
 echo ""
 
 echo "Done! Starting new shell..."
