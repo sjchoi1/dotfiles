@@ -47,4 +47,26 @@ if ! grep -q "alias vim='nvim'" ~/.bashrc; then
     echo "Added vim->nvim alias to .bashrc"
 fi
 
+# Add cc (copy terminal output to clipboard) alias
+if ! grep -q "alias cc=" ~/.bashrc; then
+    echo "alias cc='tmux capture-pane -p -S -50 | xclip -selection clipboard'" >> ~/.bashrc
+    echo "Added cc alias to .bashrc"
+fi
+
+# Add gg (quick git sync) alias - excludes files >50MB
+if ! grep -q "alias gg=" ~/.bashrc; then
+    cat >> ~/.bashrc << 'EOF'
+gg() {
+  find . -size +50M -type f 2>/dev/null | while read f; do git reset "$f" 2>/dev/null; done
+  git add . && git commit -m "." && git push || (git pull --rebase && git push)
+}
+EOF
+    echo "Added gg alias to .bashrc"
+fi
+
+# Git config
+git config --global user.name "sjchoi"
+git config --global user.email "sjchoi@casys.kaist.ac.kr"
+echo "Configured git user"
+
 echo "Done! Run 'source ~/.bashrc' to apply alias."
