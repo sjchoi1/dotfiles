@@ -60,5 +60,20 @@ curl -fsSL https://claude.ai/install.sh | bash
 git config --global user.name "sjchoi"
 git config --global user.email "sjchoi@casys.kaist.ac.kr"
 
+# Generate SSH key if not exists
+if [ ! -f ~/.ssh/id_ed25519 ]; then
+    echo "Generating SSH key..."
+    mkdir -p ~/.ssh
+    ssh-keygen -t ed25519 -C "sjchoi@casys.kaist.ac.kr" -f ~/.ssh/id_ed25519 -N ""
+fi
+
+echo ""
+echo "========================================"
+echo "SSH public key (add to GitHub):"
+echo "========================================"
+cat ~/.ssh/id_ed25519.pub
+echo "========================================"
+echo ""
+
 echo "Done! Starting new shell..."
 exec bash
