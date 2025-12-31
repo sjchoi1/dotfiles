@@ -56,6 +56,14 @@ vim.keymap.set("n", "<C-Right>", "<C-w>l", { desc = "Move to right window" })
 vim.keymap.set("v", "<Tab>", ">gv", { desc = "Indent" })
 vim.keymap.set("v", "<S-Tab>", "<gv", { desc = "Unindent" })
 
+-- Open file explorer on startup (show project structure)
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    if vim.fn.argc() == 0 then
+      vim.cmd("Neotree show")
+    end
+  end,
+})
 
 -- Plugins
 require("lazy").setup({
