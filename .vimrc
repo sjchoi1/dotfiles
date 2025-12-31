@@ -13,6 +13,21 @@ set noswapfile
 set clipboard=unnamedplus
 set autoread
 
+" True color - same colors everywhere
+set termguicolors
+set background=dark
+colorscheme habamax
+
+" F5 to cycle colorschemes
+let g:my_colors = ['habamax', 'slate', 'lunaperche', 'retrobox', 'sorbet', 'wildcharm']
+let g:my_color_idx = 0
+function! CycleColors()
+    let g:my_color_idx = (g:my_color_idx + 1) % len(g:my_colors)
+    execute 'colorscheme ' . g:my_colors[g:my_color_idx]
+    echo 'colorscheme: ' . g:my_colors[g:my_color_idx]
+endfunction
+nnoremap <F5> :call CycleColors()<CR>
+
 " Auto-reload files changed outside vim
 autocmd FocusGained,BufEnter,CursorHold * checktime
 
