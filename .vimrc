@@ -16,17 +16,43 @@ set autoread
 " True color - same colors everywhere
 set termguicolors
 set background=dark
-colorscheme habamax
 
-" F5 to cycle colorschemes
-let g:my_colors = ['habamax', 'slate', 'lunaperche', 'retrobox', 'sorbet', 'wildcharm']
+" 10 colorschemes - F5 to cycle, saves on exit
+let g:my_colors = ['habamax', 'retrobox', 'sorbet', 'wildcharm', 'lunaperche', 'slate', 'murphy', 'industry', 'koehler', 'desert']
 let g:my_color_idx = 0
+let g:colorscheme_file = expand('~/.vim/colorscheme')
+
+function! LoadSavedColorscheme()
+    if filereadable(g:colorscheme_file)
+        let l:saved = readfile(g:colorscheme_file)[0]
+        let l:idx = index(g:my_colors, l:saved)
+        if l:idx >= 0
+            let g:my_color_idx = l:idx
+        endif
+    endif
+    execute 'colorscheme ' . g:my_colors[g:my_color_idx]
+endfunction
+
 function! CycleColors()
     let g:my_color_idx = (g:my_color_idx + 1) % len(g:my_colors)
     execute 'colorscheme ' . g:my_colors[g:my_color_idx]
-    echo 'colorscheme: ' . g:my_colors[g:my_color_idx]
+    echo 'colorscheme: ' . g:my_colors[g:my_color_idx] . ' (' . (g:my_color_idx + 1) . '/' . len(g:my_colors) . ')'
 endfunction
+
+function! SaveColorscheme()
+    call writefile([g:my_colors[g:my_color_idx]], g:colorscheme_file)
+endfunction
+
+autocmd VimEnter * call LoadSavedColorscheme()
+autocmd VimLeave * call SaveColorscheme()
 nnoremap <F5> :call CycleColors()<CR>
+
+" Emphasize focused window
+set cursorline
+autocmd WinEnter * setlocal cursorline
+autocmd WinLeave * setlocal nocursorline
+highlight CursorLine guibg=#303040
+highlight WinSeparator guifg=#5080ff guibg=NONE
 
 " Auto-reload files changed outside vim
 autocmd FocusGained,BufEnter,CursorHold * checktime

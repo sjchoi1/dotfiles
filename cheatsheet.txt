@@ -53,3 +53,7 @@ Enter       open file
 -           go up directory
 %           create file
 D           delete
+
+SETTINGS
+--------
+F5          cycle colorscheme
