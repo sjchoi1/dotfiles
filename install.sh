@@ -75,4 +75,5 @@ curl -fsSL https://claude.ai/install.sh | bash
 # Git config
 git config --global user.name "sjchoi"
 git config --global user.email "sjchoi@casys.kaist.ac.kr"
-echo "Configured git user"
+
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc && source ~/.bashrc
