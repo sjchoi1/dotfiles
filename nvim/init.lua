@@ -68,16 +68,13 @@ vim.api.nvim_create_autocmd("VimEnter", {
 
 -- Plugins
 require("lazy").setup({
-  -- Color scheme (high contrast)
+  -- Color scheme (high contrast dark)
   {
-    "Mofiqul/vscode.nvim",
+    "projekt0n/github-nvim-theme",
     priority = 1000,
     config = function()
-      require("vscode").setup({
-        style = "dark",
-        transparent = false,
-      })
-      require("vscode").load("dark")
+      require("github-theme").setup({})
+      vim.cmd("colorscheme github_dark_high_contrast")
     end,
   },
 
@@ -133,7 +130,7 @@ require("lazy").setup({
     dependencies = "nvim-tree/nvim-web-devicons",
     config = function()
       require("lualine").setup({
-        options = { theme = "vscode" },
+        options = { theme = "auto" },
       })
     end,
   },
@@ -143,6 +140,17 @@ require("lazy").setup({
     "lewis6991/gitsigns.nvim",
     config = function()
       require("gitsigns").setup()
+    end,
+  },
+
+  -- Show keybinding hints (press any key and wait)
+  {
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("which-key").setup({
+        delay = 300,  -- Show after 300ms
+      })
     end,
   },
 
@@ -171,13 +179,12 @@ require("lazy").setup({
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
-    config = function()
-      require("nvim-treesitter.configs").setup({
-        ensure_installed = { "lua", "python", "javascript", "typescript", "bash", "json", "yaml", "markdown" },
-        auto_install = true,
-        highlight = { enable = true },
-        indent = { enable = true },
-      })
-    end,
+    main = "nvim-treesitter.configs",
+    opts = {
+      ensure_installed = { "lua", "python", "javascript", "typescript", "bash", "json", "yaml", "markdown" },
+      auto_install = true,
+      highlight = { enable = true },
+      indent = { enable = true },
+    },
   },
 })
