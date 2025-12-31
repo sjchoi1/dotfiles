@@ -57,3 +57,26 @@ D           delete
 SETTINGS
 --------
 F5          cycle colorscheme
+
+TMUX (prefix = Ctrl+b)
+----------------------
+c           new window
+n / p       next/prev window
+0-9         go to window N
+d           detach session
+x           kill pane
+%           split vertical
+"           split horizontal
+arrow       switch pane
+z           zoom pane (toggle)
+[           scroll mode (q to exit)
+,           rename window
+$           rename session
+
+TMUX COMMANDS
+-------------
+tmux                new session
+tmux ls             list sessions
+tmux a              attach last
+tmux a -t name      attach to name
+tmux kill-ses -t N  kill session
