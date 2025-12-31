@@ -80,3 +80,8 @@ tmux ls             list sessions
 tmux a              attach last
 tmux a -t name      attach to name
 tmux kill-ses -t N  kill session
+
+CUSTOM SHELL
+------------
+gg          git add, commit ".", push
+yy [N]      copy last N lines to clipboard
