@@ -100,9 +100,13 @@ function! CloseCurrentFile()
 endfunction
 
 " Handle :q based on which pane we're in
-function! HandleQuit()
+function! HandleQuit(save)
     let l:ft = &filetype
     let l:bufname = bufname('%')
+    " Save if requested and buffer is a real file
+    if a:save && &modified && l:ft != 'netrw' && l:ft != 'bufferlist' && l:bufname != '[Cheatsheet]'
+        write
+    endif
     if l:ft == 'netrw'
         qall
     elseif l:ft == 'bufferlist'
@@ -121,9 +125,16 @@ function! HandleQuit()
     endif
 endfunction
 
-" Override :q and :quit commands
-cnoreabbrev <expr> q getcmdtype() == ':' && getcmdline() == 'q' ? 'call HandleQuit()' : 'q'
-cnoreabbrev <expr> quit getcmdtype() == ':' && getcmdline() == 'quit' ? 'call HandleQuit()' : 'quit'
+" Override quit commands
+cnoreabbrev <expr> q getcmdtype() == ':' && getcmdline() == 'q' ? 'call HandleQuit(0)' : 'q'
+cnoreabbrev <expr> quit getcmdtype() == ':' && getcmdline() == 'quit' ? 'call HandleQuit(0)' : 'quit'
+cnoreabbrev <expr> wq getcmdtype() == ':' && getcmdline() == 'wq' ? 'call HandleQuit(1)' : 'wq'
+cnoreabbrev <expr> x getcmdtype() == ':' && getcmdline() == 'x' ? 'call HandleQuit(1)' : 'x'
+cnoreabbrev <expr> exit getcmdtype() == ':' && getcmdline() == 'exit' ? 'call HandleQuit(1)' : 'exit'
+
+" Normal mode ZZ and ZQ
+nnoremap ZZ :call HandleQuit(1)<CR>
+nnoremap ZQ :call HandleQuit(0)<CR>
 
 " Map 'q' key in side panels
 autocmd FileType netrw nnoremap <buffer> q :qall<CR>
