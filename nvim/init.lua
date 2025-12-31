@@ -56,14 +56,27 @@ vim.keymap.set("n", "<C-Right>", "<C-w>l", { desc = "Move to right window" })
 vim.keymap.set("v", "<Tab>", ">gv", { desc = "Indent" })
 vim.keymap.set("v", "<S-Tab>", "<gv", { desc = "Unindent" })
 
+-- Open file explorer on startup (like VS Code)
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    -- Only if no file was opened
+    if vim.fn.argc() == 0 then
+      vim.cmd("Neotree show")
+    end
+  end,
+})
+
 -- Plugins
 require("lazy").setup({
-  -- Color scheme
+  -- Color scheme (VS Code-like)
   {
-    "folke/tokyonight.nvim",
+    "navarasu/onedark.nvim",
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme("tokyonight-night")
+      require("onedark").setup({
+        style = "dark",  -- Options: dark, darker, cool, deep, warm, warmer
+      })
+      require("onedark").load()
     end,
   },
 
@@ -71,6 +84,7 @@ require("lazy").setup({
   {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
+    lazy = false,  -- Load immediately
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-tree/nvim-web-devicons",
@@ -118,7 +132,7 @@ require("lazy").setup({
     dependencies = "nvim-tree/nvim-web-devicons",
     config = function()
       require("lualine").setup({
-        options = { theme = "tokyonight" },
+        options = { theme = "onedark" },
       })
     end,
   },

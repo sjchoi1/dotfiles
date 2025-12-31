@@ -9,15 +9,18 @@ DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "Installing dotfiles from $DOTFILES_DIR"
 
-# Install neovim if not present
+# Install neovim if not present (need v0.9+ for modern plugins)
 if ! command -v nvim &> /dev/null; then
     echo "Installing neovim..."
-    if command -v apt &> /dev/null; then
-        sudo apt update && sudo apt install -y neovim
-    elif command -v brew &> /dev/null; then
+    if command -v brew &> /dev/null; then
         brew install neovim
-    elif command -v snap &> /dev/null; then
-        sudo snap install nvim --classic
+    elif command -v apt &> /dev/null; then
+        # Use PPA for newer version (apt version is too old)
+        sudo apt update
+        sudo apt install -y software-properties-common
+        sudo add-apt-repository -y ppa:neovim-ppa/unstable
+        sudo apt update
+        sudo apt install -y neovim
     else
         echo "Could not install neovim - please install manually"
     fi
