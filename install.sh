@@ -49,4 +49,15 @@ else
     fi
 fi
 
+# Install Claude Code
+if command -v npm &> /dev/null; then
+    echo "Installing Claude Code..."
+    npm install -g @anthropic-ai/claude-code
+    echo "Claude Code installed"
+else
+    echo "npm not found - install Node.js first to get Claude Code"
+    echo "  curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -"
+    echo "  sudo apt install -y nodejs"
+fi
+
 echo "Done!"
