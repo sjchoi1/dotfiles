@@ -68,13 +68,22 @@ vim.api.nvim_create_autocmd("VimEnter", {
 
 -- Plugins
 require("lazy").setup({
-  -- Color scheme (high contrast dark)
+  -- Color scheme (vibrant high contrast)
   {
-    "projekt0n/github-nvim-theme",
+    "catppuccin/nvim",
+    name = "catppuccin",
     priority = 1000,
     config = function()
-      require("github-theme").setup({})
-      vim.cmd("colorscheme github_dark_high_contrast")
+      require("catppuccin").setup({
+        flavour = "mocha",  -- vibrant dark theme
+        no_italic = true,
+        color_overrides = {
+          mocha = {
+            base = "#000000",  -- pure black background for max contrast
+          },
+        },
+      })
+      vim.cmd("colorscheme catppuccin")
     end,
   },
 
