@@ -71,7 +71,7 @@ echo "Neovim plugins installed"
 
 # Install Claude Code
 echo "Installing Claude Code..."
-npm install -g @anthropic-ai/claude-code
+sudo npm install -g @anthropic-ai/claude-code
 echo "Claude Code installed"
 
 echo "Done!"
