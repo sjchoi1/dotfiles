@@ -47,15 +47,15 @@ if ! grep -q "alias vim='nvim'" ~/.bashrc; then
     echo "Added vim->nvim alias to .bashrc"
 fi
 
-# Add cc (copy terminal output to clipboard) function
-if ! grep -q "^cc()" ~/.bashrc; then
-    cat >> ~/.bashrc << 'EOFCC'
-cc() {
+# Add yy (copy terminal output to clipboard) function
+if ! grep -q "^yy()" ~/.bashrc; then
+    cat >> ~/.bashrc << 'EOFYY'
+yy() {
   local n=${1:-10}
   tmux capture-pane -p | grep -v "^$" | tail -n "$n" | xclip -selection clipboard
 }
-EOFCC
-    echo "Added cc function to .bashrc"
+EOFYY
+    echo "Added yy function to .bashrc"
 fi
 
 # Add gg (quick git sync) alias - excludes files >50MB
