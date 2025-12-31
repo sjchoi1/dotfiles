@@ -12,7 +12,7 @@ vim.opt.rtp:prepend(lazypath)
 -- Basic settings
 vim.g.mapleader = " "
 vim.opt.number = true
-vim.opt.relativenumber = true
+vim.opt.relativenumber = false
 vim.opt.mouse = "a"                  -- Enable mouse
 vim.opt.clipboard = "unnamedplus"    -- Use system clipboard
 vim.opt.tabstop = 4
@@ -68,15 +68,16 @@ vim.api.nvim_create_autocmd("VimEnter", {
 
 -- Plugins
 require("lazy").setup({
-  -- Color scheme (VS Code-like)
+  -- Color scheme (high contrast)
   {
-    "navarasu/onedark.nvim",
+    "Mofiqul/vscode.nvim",
     priority = 1000,
     config = function()
-      require("onedark").setup({
-        style = "dark",  -- Options: dark, darker, cool, deep, warm, warmer
+      require("vscode").setup({
+        style = "dark",
+        transparent = false,
       })
-      require("onedark").load()
+      require("vscode").load("dark")
     end,
   },
 
@@ -132,7 +133,7 @@ require("lazy").setup({
     dependencies = "nvim-tree/nvim-web-devicons",
     config = function()
       require("lualine").setup({
-        options = { theme = "onedark" },
+        options = { theme = "vscode" },
       })
     end,
   },
