@@ -20,7 +20,7 @@ let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
 " 10 colorschemes - F5 to cycle, saves on exit
-let g:my_colors = ['desert', 'slate', 'murphy', 'industry', 'koehler', 'pablo', 'ron', 'torte', 'elflord', 'delek']
+let g:my_colors = ['desert', 'slate', 'murphy', 'industry', 'pablo', 'ron', 'torte', 'elflord', 'darkblue', 'evening']
 let g:my_color_idx = 0
 let g:colorscheme_file = expand('~/.vim/colorscheme')
 
