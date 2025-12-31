@@ -11,6 +11,10 @@ set splitright
 set splitbelow
 set noswapfile
 set clipboard=unnamedplus
+set autoread
+
+" Auto-reload files changed outside vim
+autocmd FocusGained,BufEnter,CursorHold * checktime
 
 " Window navigation with Tab
 nnoremap <Tab> <C-w>w
