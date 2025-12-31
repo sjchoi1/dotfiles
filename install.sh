@@ -9,6 +9,33 @@ DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "Installing dotfiles from $DOTFILES_DIR"
 
+# Install neovim if not present
+if ! command -v nvim &> /dev/null; then
+    echo "Installing neovim..."
+    if command -v apt &> /dev/null; then
+        sudo apt update && sudo apt install -y neovim
+    elif command -v brew &> /dev/null; then
+        brew install neovim
+    elif command -v snap &> /dev/null; then
+        sudo snap install nvim --classic
+    else
+        echo "Could not install neovim - please install manually"
+    fi
+fi
+
+# Install Node.js if not present (needed for Claude Code)
+if ! command -v npm &> /dev/null; then
+    echo "Installing Node.js..."
+    if command -v apt &> /dev/null; then
+        curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+        sudo apt install -y nodejs
+    elif command -v brew &> /dev/null; then
+        brew install node
+    else
+        echo "Could not install Node.js - please install manually"
+    fi
+fi
+
 # Backup and link .tmux.conf
 if [ -f ~/.tmux.conf ] && [ ! -L ~/.tmux.conf ]; then
     echo "Backing up existing .tmux.conf to ~/.tmux.conf.backup"
@@ -34,30 +61,14 @@ fi
 ln -sf "$DOTFILES_DIR/.vimrc" ~/.vimrc
 echo "Linked .vimrc"
 
-# Install neovim plugins (lazy.nvim auto-installs on first run)
-if command -v nvim &> /dev/null; then
-    echo "Installing neovim plugins..."
-    nvim --headless "+Lazy! sync" +qa
-    echo "Neovim plugins installed"
-else
-    echo "neovim not found - install with: sudo apt install neovim (or brew install neovim)"
-    # Fall back to vim
-    if command -v vim &> /dev/null; then
-        echo "Installing vim plugins..."
-        vim +PlugInstall +qall
-        echo "Vim plugins installed"
-    fi
-fi
+# Install neovim plugins
+echo "Installing neovim plugins..."
+nvim --headless "+Lazy! sync" +qa
+echo "Neovim plugins installed"
 
 # Install Claude Code
-if command -v npm &> /dev/null; then
-    echo "Installing Claude Code..."
-    npm install -g @anthropic-ai/claude-code
-    echo "Claude Code installed"
-else
-    echo "npm not found - install Node.js first to get Claude Code"
-    echo "  curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -"
-    echo "  sudo apt install -y nodejs"
-fi
+echo "Installing Claude Code..."
+npm install -g @anthropic-ai/claude-code
+echo "Claude Code installed"
 
 echo "Done!"
