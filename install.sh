@@ -60,4 +60,5 @@ curl -fsSL https://claude.ai/install.sh | bash
 git config --global user.name "sjchoi"
 git config --global user.email "sjchoi@casys.kaist.ac.kr"
 
-echo "Done! Run 'source ~/.bashrc' to apply changes."
+echo "Done! Starting new shell..."
+exec bash
