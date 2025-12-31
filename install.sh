@@ -41,32 +41,15 @@ mkdir -p ~/.config
 ln -sf "$DOTFILES_DIR/nvim" ~/.config/nvim
 echo "Linked nvim config"
 
-# Add vim alias to bashrc
-if ! grep -q "alias vim='nvim'" ~/.bashrc; then
-    echo "alias vim='nvim'" >> ~/.bashrc
-    echo "Added vim->nvim alias to .bashrc"
-fi
+# Link .bashrc.dotfiles and source it from .bashrc
+ln -sf "$DOTFILES_DIR/.bashrc.dotfiles" ~/.bashrc.dotfiles
+echo "Linked .bashrc.dotfiles"
 
-# Add yy (copy terminal output to clipboard) function
-if ! grep -q "^yy()" ~/.bashrc; then
-    cat >> ~/.bashrc << 'EOFYY'
-yy() {
-  local n=${1:-10}
-  tmux capture-pane -p | grep -v "^$" | tail -n "$n" | xclip -selection clipboard
-}
-EOFYY
-    echo "Added yy function to .bashrc"
-fi
-
-# Add gg (quick git sync) alias - excludes files >50MB
-if ! grep -q "alias gg=" ~/.bashrc; then
-    cat >> ~/.bashrc << 'EOF'
-gg() {
-  find . -size +50M -type f 2>/dev/null | while read f; do git reset "$f" 2>/dev/null; done
-  git add . && git commit -m "." && git push || (git pull --rebase && git push)
-}
-EOF
-    echo "Added gg alias to .bashrc"
+if ! grep -q "bashrc.dotfiles" ~/.bashrc 2>/dev/null; then
+    echo "" >> ~/.bashrc
+    echo "# Dotfiles config" >> ~/.bashrc
+    echo '[ -f ~/.bashrc.dotfiles ] && source ~/.bashrc.dotfiles' >> ~/.bashrc
+    echo "Added source line to .bashrc"
 fi
 
 # Install claude code
