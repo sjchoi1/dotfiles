@@ -64,6 +64,16 @@ fi
 ln -sf "$DOTFILES_DIR/.vimrc" ~/.vimrc
 echo "Linked .vimrc"
 
+# Link aliases and add to shell rc
+ln -sf "$DOTFILES_DIR/.aliases" ~/.aliases
+echo "Linked .aliases"
+
+# Add source line to bashrc if not already there
+if ! grep -q "source ~/.aliases" ~/.bashrc 2>/dev/null; then
+    echo 'source ~/.aliases' >> ~/.bashrc
+    echo "Added aliases to .bashrc"
+fi
+
 # Install neovim plugins
 echo "Installing neovim plugins..."
 nvim --headless "+Lazy! sync" +qa
