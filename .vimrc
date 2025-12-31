@@ -138,16 +138,21 @@ cnoreabbrev <expr> exit getcmdtype() == ':' && getcmdline() == 'exit' ? 'call Ha
 nnoremap ZZ :call HandleQuit(1)<CR>
 nnoremap ZQ :call HandleQuit(0)<CR>
 
-" Open buffer from list
-function! OpenBuffer(idx)
+" Open buffer from list (stay=1 keeps focus in buffer list)
+function! OpenBuffer(idx, ...)
     if !exists('b:buffer_list') || a:idx < 0 || a:idx >= len(b:buffer_list)
         return
     endif
+    let l:stay = get(a:, 1, 0)
+    let l:cur = winnr()
     let l:bufnr = b:buffer_list[a:idx]
     let l:mid = FindMiddleWin()
     if l:mid > 0
         call GotoWin(l:mid)
         execute 'buffer ' . l:bufnr
+        if l:stay
+            call GotoWin(l:cur)
+        endif
     endif
 endfunction
 
@@ -207,8 +212,10 @@ function! SetupBufferListPanel()
     let b:buffer_list = []
     vertical resize 25
     setlocal winfixwidth
-    nnoremap <buffer> <CR> :call OpenBuffer(line('.') - 1)<CR>
-    nnoremap <buffer> <LeftRelease> :call OpenBuffer(line('.') - 1)<CR>
+    nnoremap <buffer> <CR> :call OpenBuffer(line('.') - 1, 0)<CR>
+    nnoremap <buffer> <LeftRelease> :call OpenBuffer(line('.') - 1, 0)<CR>
+    nnoremap <buffer> j j:call OpenBuffer(line('.') - 1, 1)<CR>
+    nnoremap <buffer> k k:call OpenBuffer(line('.') - 1, 1)<CR>
     for i in range(1, 9)
         execute 'nnoremap <buffer> ' . i . ' :call OpenBuffer(' . (i-1) . ')<CR>'
     endfor
