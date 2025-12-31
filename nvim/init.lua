@@ -56,15 +56,6 @@ vim.keymap.set("n", "<C-Right>", "<C-w>l", { desc = "Move to right window" })
 vim.keymap.set("v", "<Tab>", ">gv", { desc = "Indent" })
 vim.keymap.set("v", "<S-Tab>", "<gv", { desc = "Unindent" })
 
--- Open file explorer on startup (like VS Code)
-vim.api.nvim_create_autocmd("VimEnter", {
-  callback = function()
-    -- Only if no file was opened
-    if vim.fn.argc() == 0 then
-      vim.cmd("Neotree show")
-    end
-  end,
-})
 
 -- Plugins
 require("lazy").setup({
@@ -151,6 +142,60 @@ require("lazy").setup({
       require("which-key").setup({
         delay = 300,  -- Show after 300ms
       })
+    end,
+  },
+
+  -- Startup dashboard with tips
+  {
+    "goolord/alpha-nvim",
+    dependencies = "nvim-tree/nvim-web-devicons",
+    config = function()
+      local alpha = require("alpha")
+      local dashboard = require("alpha.themes.dashboard")
+
+      -- Random tips
+      local tips = {
+        "Tip: Use 'w' to jump to next word, 'b' to go back",
+        "Tip: Use 'gg' to go to top, 'G' to go to bottom",
+        "Tip: Use '/' to search, 'n' for next match",
+        "Tip: Use 'dd' to delete a line, 'yy' to copy it",
+        "Tip: Use 'u' to undo, 'Ctrl+r' to redo",
+        "Tip: Use 'ciw' to change inner word",
+        "Tip: Use 'Ctrl+p' to find files quickly",
+        "Tip: Use 'Ctrl+b' to toggle file explorer",
+        "Tip: Use ':w' to save, ':q' to quit",
+        "Tip: Use 'o' to insert line below, 'O' for above",
+        "Tip: Use '0' to go to line start, '$' to line end",
+        "Tip: Use 'f{char}' to jump to character",
+        "Tip: Use '%' to jump to matching bracket",
+        "Tip: Use 'Ctrl+s' to save (VS Code style)",
+        "Tip: Use 'v' for visual mode, select with movement",
+      }
+
+      dashboard.section.header.val = {
+        "                                   ",
+        "   ⣴⣶⣤⡤⠦⣤⣀⣤⠆     ⣈⣭⣿⣶⣿⣦⣼⣆          ",
+        "    ⠉⠻⢿⣿⠿⣿⣿⣶⣦⠤⠶⣿⠿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣿          ",
+        "       ⠻⣿⣿⣿⣶⣤⣤⣿⣀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿          ",
+        "        ⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠛⠻⣿        ",
+        "         ⠈⠛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠁          ",
+        "            ⠻⢿⣿⣿⣿⣿⣿⣿⠟⠁              ",
+        "                NEOVIM               ",
+        "                                   ",
+      }
+
+      dashboard.section.buttons.val = {
+        dashboard.button("f", "  Find file", ":Telescope find_files<CR>"),
+        dashboard.button("r", "  Recent files", ":Telescope oldfiles<CR>"),
+        dashboard.button("n", "  New file", ":ene<CR>"),
+        dashboard.button("q", "  Quit", ":qa<CR>"),
+      }
+
+      -- Random tip at the bottom
+      math.randomseed(os.time())
+      dashboard.section.footer.val = tips[math.random(#tips)]
+
+      alpha.setup(dashboard.config)
     end,
   },
 
