@@ -9,14 +9,6 @@ DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "Installing dotfiles from $DOTFILES_DIR"
 
-# Backup and link .vimrc
-if [ -f ~/.vimrc ] && [ ! -L ~/.vimrc ]; then
-    echo "Backing up existing .vimrc to ~/.vimrc.backup"
-    mv ~/.vimrc ~/.vimrc.backup
-fi
-ln -sf "$DOTFILES_DIR/.vimrc" ~/.vimrc
-echo "Linked .vimrc"
-
 # Backup and link .tmux.conf
 if [ -f ~/.tmux.conf ] && [ ! -L ~/.tmux.conf ]; then
     echo "Backing up existing .tmux.conf to ~/.tmux.conf.backup"
@@ -25,13 +17,36 @@ fi
 ln -sf "$DOTFILES_DIR/.tmux.conf" ~/.tmux.conf
 echo "Linked .tmux.conf"
 
-# Install vim plugins
-if command -v vim &> /dev/null; then
-    echo "Installing vim plugins..."
-    vim +PlugInstall +qall
-    echo "Vim plugins installed"
+# Backup and link neovim config
+mkdir -p ~/.config
+if [ -d ~/.config/nvim ] && [ ! -L ~/.config/nvim ]; then
+    echo "Backing up existing nvim config to ~/.config/nvim.backup"
+    mv ~/.config/nvim ~/.config/nvim.backup
+fi
+ln -sf "$DOTFILES_DIR/nvim" ~/.config/nvim
+echo "Linked nvim config"
+
+# Backup and link .vimrc (fallback for servers without neovim)
+if [ -f ~/.vimrc ] && [ ! -L ~/.vimrc ]; then
+    echo "Backing up existing .vimrc to ~/.vimrc.backup"
+    mv ~/.vimrc ~/.vimrc.backup
+fi
+ln -sf "$DOTFILES_DIR/.vimrc" ~/.vimrc
+echo "Linked .vimrc"
+
+# Install neovim plugins (lazy.nvim auto-installs on first run)
+if command -v nvim &> /dev/null; then
+    echo "Installing neovim plugins..."
+    nvim --headless "+Lazy! sync" +qa
+    echo "Neovim plugins installed"
 else
-    echo "vim not found, skipping plugin installation"
+    echo "neovim not found - install with: sudo apt install neovim (or brew install neovim)"
+    # Fall back to vim
+    if command -v vim &> /dev/null; then
+        echo "Installing vim plugins..."
+        vim +PlugInstall +qall
+        echo "Vim plugins installed"
+    fi
 fi
 
 echo "Done!"
