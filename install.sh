@@ -54,7 +54,12 @@ if ! grep -q "bashrc.dotfiles" ~/.bashrc 2>/dev/null; then
 fi
 
 # Install claude code
-curl -fsSL https://claude.ai/install.sh | bash
+if ! command -v claude &> /dev/null; then
+    echo "Installing Claude Code..."
+    curl -fsSL https://claude.ai/install.sh | bash
+else
+    echo "Claude Code already installed, skipping..."
+fi
 
 # Git config
 git config --global user.name "sjchoi"
