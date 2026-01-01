@@ -8,12 +8,6 @@ export PATH
 # Aliases
 alias vim='nvim'
 
-# yy - copy last N lines from tmux to clipboard
-yy() {
-  local n=${1:-10}
-  tmux capture-pane -p | grep -v "^$" | tail -n "$n" | xclip -selection clipboard
-}
-
 # gg - quick git sync (excludes files >50MB)
 gg() {
   find . -size +50M -type f 2>/dev/null | while read f; do git reset "$f" 2>/dev/null; done

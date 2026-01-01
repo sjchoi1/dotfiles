@@ -1,87 +1,61 @@
 VIM CHEATSHEET
-==============
+══════════════════════════════════════════════════════════════════════════════
 
-MODES
------
-i / a       insert before/after cursor
-Esc         back to normal mode
-v / V       visual / visual line
-
-NAVIGATION
-----------
-h j k l     left/down/up/right
-w / b       next/prev word
-0 / $       line start/end
-gg / G      file start/end
-Ctrl+d/u    page down/up
-/text       search (n/N next/prev)
-
-EDITING
--------
-x           delete char
-dd          delete line
-yy          yank (copy) line
-p           paste
-u           undo
-Ctrl+r      redo
-.           repeat last change
-
-COMMON COMBOS
--------------
-dw          delete word
-cw          change word
-ciw         change inner word
-di"         delete inside quotes
-yiw         yank inner word
-
-SAVE & QUIT
------------
-:w          save
-:q          quit
-:wq         save and quit
-:q!         quit without saving
-
-WINDOWS
--------
-Tab         next window
-Shift+Tab   prev window
-:q          close window
-
-FILE EXPLORER
--------------
-Enter       open file
--           go up directory
-%           create file
-D           delete
-
-SETTINGS
---------
-F5          cycle colorscheme
-
-TMUX (prefix = Ctrl+b)
-----------------------
-c           new window
-n / p       next/prev window
-0-9         go to window N
-d           detach session
-x           kill pane
-%           split vertical
-"           split horizontal
-arrow       switch pane
-z           zoom pane (toggle)
-[           scroll mode (q to exit)
-,           rename window
-$           rename session
-
-TMUX COMMANDS
--------------
-tmux                new session
-tmux ls             list sessions
-tmux a              attach last
-tmux a -t name      attach to name
-tmux kill-ses -t N  kill session
-
-CUSTOM SHELL
-------------
-gg          git add, commit ".", push
-yy [N]      copy last N lines to clipboard
+MODES                                    │ TMUX (prefix = Ctrl+b)
+─────                                    │ ──────────────────────
+i / a       insert before/after cursor   │ c           new window
+Esc         back to normal mode          │ n / p       next/prev window
+v / V       visual / visual line         │ 0-9         go to window N
+                                         │ d           detach session
+NAVIGATION                               │ x           kill pane
+──────────                               │ %           split vertical
+h j k l     left/down/up/right           │ "           split horizontal
+w / b       next/prev word               │ arrow       switch pane
+0 / $       line start/end               │ z           zoom pane (toggle)
+gg / G      file start/end               │ [           scroll mode (q to exit)
+Ctrl+d/u    page down/up                 │ ,           rename window
+/text       search (n/N next/prev)       │ $           rename session
+                                         │
+EDITING                                  │ TMUX COMMANDS
+───────                                  │ ─────────────
+x           delete char                  │ tmux                new session
+dd          delete line                  │ tmux ls             list sessions
+yy          yank (copy) line             │ tmux a              attach last
+p           paste                        │ tmux a -t name      attach to name
+u           undo                         │ tmux kill-ses -t N  kill session
+Ctrl+r      redo                         │
+.           repeat last change           │ CUSTOM SHELL
+                                         │ ────────────
+COMMON COMBOS                            │ gg          git add, commit ".", push
+─────────────                            │
+dw          delete word                  │
+cw          change word                  │
+ciw         change inner word            │
+di"         delete inside quotes         │
+yiw         yank inner word              │
+                                         │
+SAVE & QUIT                              │
+───────────                              │
+:w          save                         │
+:q          quit                         │
+:wq         save and quit                │
+:q!         quit without saving          │
+                                         │
+WINDOWS                                  │
+───────                                  │
+Tab         next window                  │
+Shift+Tab   prev window                  │
+:q          close window                 │
+                                         │
+FILE EXPLORER                            │
+─────────────                            │
+Enter       open file                    │
+-           go up directory              │
+%           create file                  │
+D           delete                       │
+                                         │
+FUNCTION KEYS                            │
+─────────────                            │
+F3          copy file path to clipboard  │
+F5          refresh all (buffers/netrw)  │
+F12         cycle colorscheme            │

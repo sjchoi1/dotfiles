@@ -35,7 +35,26 @@ function! CycleColors()
     echo g:my_colors[g:my_color_idx]
 endfunction
 
-nnoremap <F5> :call CycleColors()<CR>
+nnoremap <F12> :call CycleColors()<CR>
+
+" F3: Copy current file path to clipboard
+nnoremap <F3> :let @+ = expand('%:p')<CR>:echo 'Copied: ' . expand('%:p')<CR>
+
+" F5: Super refresh (buffer list + netrw + checktime)
+function! SuperRefresh()
+    call RefreshBufferList()
+    " Refresh netrw if it exists
+    let l:netrw = FindWinByFiletype('netrw')
+    if l:netrw > 0
+        let l:cur = winnr()
+        call GotoWin(l:netrw)
+        silent! execute "normal \<Plug>NetrwRefresh"
+        call GotoWin(l:cur)
+    endif
+    checktime
+    echo 'Refreshed'
+endfunction
+nnoremap <F5> :call SuperRefresh()<CR>
 
 " Focused window cursorline
 set cursorline
@@ -199,7 +218,7 @@ function! ShowCheatsheet()
         silent! read ~/.vim/cheatsheet.txt
         silent! 1delete _
     else
-        call setline(1, ['', '  Welcome to Vim', '', '  Tab: switch windows', '  F5: change colorscheme', '  :q: close file/quit'])
+        call setline(1, ['', '  Welcome to Vim', '', '  Tab: switch windows', '  F3: copy file path', '  F5: refresh all', '  F12: colorscheme', '  :q: close file/quit'])
     endif
     setlocal readonly nomodifiable
     file [Cheatsheet]
@@ -251,8 +270,9 @@ augroup vimrc
     autocmd VimLeave * call writefile([g:my_colors[g:my_color_idx]], g:colorscheme_file)
     autocmd WinEnter * setlocal cursorline
     autocmd WinLeave * setlocal nocursorline
-    autocmd FocusGained,BufEnter * silent! checktime
-    autocmd BufAdd,BufDelete * call RefreshBufferList()
+    autocmd FocusGained * silent! checktime
+    autocmd FocusLost * silent! wall
+    autocmd WinEnter * if &filetype == 'bufferlist' | call RefreshBufferList() | endif
     autocmd FileType netrw setlocal winfixwidth | let g:netrw_chgwin = FindMiddleWin()
     autocmd FileType netrw nnoremap <buffer> q :qall<CR>
     autocmd FileType bufferlist nnoremap <buffer> q :call CloseAllFiles()<CR>
