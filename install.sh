@@ -32,11 +32,6 @@ fi
 ln -sf "$DOTFILES_DIR/.vimrc" ~/.vimrc
 echo "Linked .vimrc"
 
-# Copy vim cheatsheet
-mkdir -p ~/.vim
-cp "$DOTFILES_DIR/cheatsheet.txt" ~/.vim/cheatsheet.txt
-echo "Copied cheatsheet"
-
 # Link nvim config
 mkdir -p ~/.config
 ln -sf "$DOTFILES_DIR/nvim" ~/.config/nvim
