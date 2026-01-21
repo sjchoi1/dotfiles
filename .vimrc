@@ -19,5 +19,8 @@ let g:netrw_liststyle = 3
 nnoremap <Tab> <C-w>w
 nnoremap <S-Tab> <C-w>W
 
+" File tree navigation
+nnoremap - :Ex<CR>
+
 " Open file tree when starting vim without a file
 autocmd VimEnter * if argc() == 0 | Explore | endif
