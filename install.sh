@@ -9,11 +9,11 @@ DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "Installing dotfiles from $DOTFILES_DIR"
 
-# Install neovim and xclip
+# Install neovim, xclip, fzf, and ripgrep
 if ! command -v nvim &> /dev/null; then
-    echo "Installing neovim and xclip..."
+    echo "Installing neovim, xclip, fzf, and ripgrep..."
     sudo apt-get update
-    sudo apt-get install -y neovim xclip
+    sudo apt-get install -y neovim xclip fzf ripgrep
 fi
 
 # Backup and link .tmux.conf
@@ -31,6 +31,17 @@ if [ -f ~/.vimrc ] && [ ! -L ~/.vimrc ]; then
 fi
 ln -sf "$DOTFILES_DIR/.vimrc" ~/.vimrc
 echo "Linked .vimrc"
+
+# Install vim-plug
+if [ ! -f ~/.vim/autoload/plug.vim ]; then
+    echo "Installing vim-plug..."
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+fi
+
+# Install vim plugins
+echo "Installing vim plugins..."
+vim +PlugInstall +qall
 
 # Link nvim config
 mkdir -p ~/.config
