@@ -10,7 +10,7 @@ DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 echo "Installing dotfiles from $DOTFILES_DIR"
 
 # Install neovim, xclip, fzf, and ripgrep
-if ! command -v nvim &> /dev/null; then
+if ! command -v nvim &> /dev/null || ! command -v xclip &> /dev/null || ! command -v fzf &> /dev/null || ! command -v rg &> /dev/null; then
     echo "Installing neovim, xclip, fzf, and ripgrep..."
     sudo apt-get update
     sudo apt-get install -y neovim xclip fzf ripgrep

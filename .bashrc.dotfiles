@@ -13,3 +13,30 @@ gg() {
   find . -size +50M -type f 2>/dev/null | while read f; do git reset "$f" 2>/dev/null; done
   git add . && git commit -m "." && git push || (git pull --rebase && git push)
 }
+
+# tips - show helpful shortcuts
+tips() {
+  cat << 'EOF'
+Dotfiles Tips & Shortcuts
+==========================
+
+Vim/Neovim:
+  Ctrl-p       Fuzzy file finder
+  Ctrl-f       Search in files (ripgrep)
+  Ctrl-b       Buffer list
+  -            Open file tree
+  Tab/S-Tab    Navigate windows
+
+Tmux:
+  Ctrl-b       Prefix key (default)
+  Ctrl-b c     New window
+  Ctrl-b n/p   Next/previous window
+  Ctrl-b %     Split vertical
+  Ctrl-b "     Split horizontal
+
+Shell:
+  gg           Quick git sync (add, commit, push)
+  tips         Show this help
+
+EOF
+}
