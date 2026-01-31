@@ -67,9 +67,22 @@ else
     echo "Claude Code already installed, skipping..."
 fi
 
-# Install claude-telegram-bot dependencies
+# Claude Telegram Bot setup
 echo "Installing claude-telegram-bot dependencies..."
 pip3 install python-telegram-bot --quiet
+
+if [ -z "$TELEGRAM_BOT_TOKEN" ]; then
+    echo ""
+    echo "=== Claude Telegram Bot Setup ==="
+    read -p "Enter your Telegram Bot Token (from @BotFather): " telegram_token
+    if [ -n "$telegram_token" ]; then
+        echo "" >> ~/.bashrc
+        echo "# Claude Telegram Bot" >> ~/.bashrc
+        echo "export TELEGRAM_BOT_TOKEN=\"$telegram_token\"" >> ~/.bashrc
+        export TELEGRAM_BOT_TOKEN="$telegram_token"
+        echo "Saved TELEGRAM_BOT_TOKEN to ~/.bashrc"
+    fi
+fi
 
 # Git config
 git config --global user.name "sjchoi"
