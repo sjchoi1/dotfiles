@@ -67,6 +67,10 @@ else
     echo "Claude Code already installed, skipping..."
 fi
 
+# Install claude-telegram-bot dependencies
+echo "Installing claude-telegram-bot dependencies..."
+pip3 install python-telegram-bot --quiet
+
 # Git config
 git config --global user.name "sjchoi"
 git config --global user.email "sjchoi@casys.kaist.ac.kr"

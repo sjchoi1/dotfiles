@@ -1,5 +1,8 @@
 # Dotfiles bashrc config - sourced from ~/.bashrc
 
+# Resolve dotfiles directory from this symlinked file
+DOTFILES_DIR="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+
 # PATH setup (works in tmux too)
 [ -d "$HOME/bin" ] && PATH="$HOME/bin:$PATH"
 [ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
@@ -7,6 +10,7 @@ export PATH
 
 # Aliases
 alias vim='nvim'
+alias claude-bot='python3 "$DOTFILES_DIR/claude-telegram-bot/claude_telegram_bot.py"'
 
 # gg - quick git sync (excludes files >50MB)
 gg() {
