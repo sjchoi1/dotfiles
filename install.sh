@@ -119,7 +119,7 @@ fi
 # Git config
 git config --global user.name "sjchoi"
 git config --global user.email "sjchoi@casys.kaist.ac.kr"
-git config --global pull.rebase false
+git config --global pull.rebase true
 
 # Generate SSH key if not exists
 if [ ! -f ~/.ssh/id_ed25519 ]; then
