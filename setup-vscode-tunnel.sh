@@ -12,14 +12,6 @@ else
     NODE_NAME="${NODE_NAME:-$(hostname)}"
 fi
 
-read -e -p "Enter root directory [$HOME]: " TUNNEL_DIR
-TUNNEL_DIR="${TUNNEL_DIR:-$HOME}"
-TUNNEL_DIR="$(realpath "$TUNNEL_DIR")"
-if [ ! -d "$TUNNEL_DIR" ]; then
-    echo "Error: $TUNNEL_DIR does not exist."
-    exit 1
-fi
-
 VSCODE_CLI="$HOME/.local/bin/code"
 
 # Install VS Code CLI binary
@@ -45,7 +37,6 @@ echo ""
 echo "=== Authenticating tunnel (name: $NODE_NAME) ==="
 echo "Follow the URL below to authorize with GitHub."
 echo ""
-cd "$TUNNEL_DIR"
 "$VSCODE_CLI" tunnel --name "$NODE_NAME" --accept-server-license-terms &
 TUNNEL_PID=$!
 echo ""
@@ -67,7 +58,6 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-WorkingDirectory=$TUNNEL_DIR
 ExecStart=$HOME/.local/bin/code tunnel --name $NODE_NAME --accept-server-license-terms
 Restart=always
 RestartSec=10
