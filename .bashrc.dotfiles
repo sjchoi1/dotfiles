@@ -10,7 +10,6 @@ export PATH
 
 # Aliases
 alias vim='nvim'
-alias claude-bot='python3 "$DOTFILES_DIR/claude-telegram-bot/claude_telegram_bot.py"'
 
 # gg - quick git sync (excludes files >50MB)
 gg() {
