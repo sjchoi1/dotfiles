@@ -67,26 +67,59 @@ else
     echo "Claude Code already installed, skipping..."
 fi
 
-# Claude Telegram Bot setup
-echo "Installing claude-telegram-bot dependencies..."
-pip3 install python-telegram-bot --quiet
+# Install VS Code CLI (standalone tunnel binary)
+VSCODE_CLI="$HOME/.local/bin/code"
+if [ ! -f "$VSCODE_CLI" ]; then
+    echo "Installing VS Code CLI..."
+    ARCH=$(uname -m)
+    case "$ARCH" in
+        x86_64)  VSCODE_ARCH="x64" ;;
+        aarch64) VSCODE_ARCH="arm64" ;;
+        *)       echo "Unsupported architecture: $ARCH"; exit 1 ;;
+    esac
+    mkdir -p "$HOME/.local/bin"
+    curl -fsSL "https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-${VSCODE_ARCH}" -o /tmp/vscode_cli.tar.gz
+    tar -xzf /tmp/vscode_cli.tar.gz -C "$HOME/.local/bin"
+    mv "$HOME/.local/bin/code" "$VSCODE_CLI"
+    rm /tmp/vscode_cli.tar.gz
+    echo "VS Code CLI installed to $VSCODE_CLI"
+else
+    echo "VS Code CLI already installed, skipping..."
+fi
 
-if [ -z "$TELEGRAM_BOT_TOKEN" ]; then
-    echo ""
-    echo "=== Claude Telegram Bot Setup ==="
-    read -p "Enter your Telegram Bot Token (from @BotFather): " telegram_token
-    if [ -n "$telegram_token" ]; then
-        echo "" >> ~/.bashrc
-        echo "# Claude Telegram Bot" >> ~/.bashrc
-        echo "export TELEGRAM_BOT_TOKEN=\"$telegram_token\"" >> ~/.bashrc
-        export TELEGRAM_BOT_TOKEN="$telegram_token"
-        echo "Saved TELEGRAM_BOT_TOKEN to ~/.bashrc"
-    fi
+# Set up VS Code tunnel as a systemd service
+NODE_NAME="${VSCODE_TUNNEL_NAME:-$(hostname)}"
+SERVICE_FILE="$HOME/.config/systemd/user/code.service"
+if [ ! -f "$SERVICE_FILE" ]; then
+    echo "Setting up VS Code tunnel service (node name: $NODE_NAME)..."
+    echo "NOTE: Run '$VSCODE_CLI tunnel --name $NODE_NAME' once first to authenticate with GitHub."
+    mkdir -p "$HOME/.config/systemd/user"
+    cat > "$SERVICE_FILE" <<EOF
+[Unit]
+Description=VS Code Tunnel ($NODE_NAME)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=$HOME/.local/bin/code tunnel --name $NODE_NAME --accept-server-license-terms
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target
+EOF
+    systemctl --user daemon-reload
+    systemctl --user enable code.service
+    echo "VS Code tunnel service created. Start with: systemctl --user start code"
+else
+    echo "VS Code tunnel service already exists, skipping..."
 fi
 
 # Git config
 git config --global user.name "sjchoi"
 git config --global user.email "sjchoi@casys.kaist.ac.kr"
+git config --global pull.rebase false
 
 # Generate SSH key if not exists
 if [ ! -f ~/.ssh/id_ed25519 ]; then
