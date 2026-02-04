@@ -80,7 +80,6 @@ if [ ! -f "$VSCODE_CLI" ]; then
     mkdir -p "$HOME/.local/bin"
     curl -fsSL "https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-${VSCODE_ARCH}" -o /tmp/vscode_cli.tar.gz
     tar -xzf /tmp/vscode_cli.tar.gz -C "$HOME/.local/bin"
-    mv "$HOME/.local/bin/code" "$VSCODE_CLI"
     rm /tmp/vscode_cli.tar.gz
     echo "VS Code CLI installed to $VSCODE_CLI"
 else
